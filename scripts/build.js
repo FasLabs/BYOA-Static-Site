@@ -16,6 +16,10 @@ async function buildSite() {
     // Copy JavaScript files
     await fs.copy('src/assets/js', 'dist/js', { overwrite: true });
 
+    // Ensure the images directory exists in dist
+    await fs.ensureDir('dist/images');
+    await fs.copy('src/assets/images', 'dist/images', { overwrite: true });
+
     // Build pages
     const pagesDir = 'src/content/pages';
     const files = await fs.readdir(pagesDir);

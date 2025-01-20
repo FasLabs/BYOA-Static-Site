@@ -24,6 +24,7 @@ body {
 .site-header {
   padding: 1rem 2rem;
   border-bottom: 1px solid var(--border-color);
+  margin: 0 -2rem;
 }
 
 .main-nav {
@@ -74,13 +75,14 @@ main {
 
 .site-footer {
   border-top: 1px solid var(--border-color);
-  padding: 2rem;
+  padding: 1rem 2rem;
+  margin: 0 -2rem;
   margin-top: auto;
 }
 
 .footer-content {
   text-align: center;
-  margin-bottom: 2rem;
+  padding: 1rem 0;
 }
 
 .footer-content h2 {
@@ -90,26 +92,44 @@ main {
 }
 
 .social-links {
-  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .social-links a {
   color: var(--link-color);
   text-decoration: none;
-  margin: 0 0.5rem;
+  font-size: 1.5rem;
   transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
 }
 
 .social-links a:hover {
   color: var(--link-hover-color);
 }
 
+.adjacent-icon {
+  height: 1.5rem;
+  width: auto;
+  filter: brightness(0.3);
+  transition: filter 0.2s ease;
+}
+
+.social-links a:hover .adjacent-icon {
+  filter: brightness(0);
+}
+
 .copyright {
   text-align: center;
   font-size: 0.8rem;
   color: var(--link-color);
-  padding-top: 1rem;
+  padding: 1rem 0;
   border-top: 1px solid var(--border-color);
+  margin: 0 -2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 /* Hamburger menu icon */
