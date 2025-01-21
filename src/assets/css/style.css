@@ -1,6 +1,6 @@
 :root {
-  --text-color: #333;
-  --background-color: #fff;
+  --text-color: #1f0e16;
+  --background-color: #fdfcfc;
   --link-color: #555;
   --link-hover-color: #000;
   --border-color: #eaeaea;
@@ -58,7 +58,6 @@ body {
   text-decoration: none;
   margin: 0 1rem;
   font-size: 0.9rem;
-  text-transform: lowercase;
   transition: color 0.2s ease;
 }
 
@@ -74,7 +73,6 @@ main {
 }
 
 .site-footer {
-  border-top: 1px solid var(--border-color);
   padding: 1rem 2rem;
   margin: 0 -2rem;
   margin-top: auto;
@@ -83,6 +81,7 @@ main {
 .footer-content {
   text-align: center;
   padding: 1rem 0;
+  border-top: 1px solid var(--border-color);
 }
 
 .footer-content h2 {
