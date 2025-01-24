@@ -1,5 +1,6 @@
 ---
-title: Contact
+title: Get in Touch
+description: I'm always interested in hearing about new projects, opportunities, or just connecting with fellow developers.
 ---
 
 # Get in Touch

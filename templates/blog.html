@@ -1,0 +1,35 @@
+<header class="page-header">
+    <h1>Articles</h1>
+    <p class="page-intro">Welcome to my blog! Here you'll find articles about complexity, innovation, and organizational development.</p>
+</header>
+
+<nav class="tag-navigation" aria-label="Article categories">
+    <ul class="tag-list">
+        [[#each uniqueTags]]
+        <li><a href="/tags/[[this]]" class="tag">[[this]]</a></li>
+        [[/each]]
+    </ul>
+</nav>
+
+<div class="blog-grid">
+    [[#each posts]]
+    <a href="/blog/[[slug]]" class="blog-card">
+        [[#if image]]
+        <img 
+            src="[[image]]" 
+            alt="[[imageAlt]]" 
+            class="blog-card-image"
+            loading="lazy"
+        >
+        [[/if]]
+        <div class="blog-card-content">
+            <h2>[[title]]</h2>
+            <div class="blog-card-meta">
+                <time datetime="[[date]]">[[formattedDate]]</time>
+                · [[author]]
+            </div>
+            <p class="blog-card-description">[[description]]</p>
+        </div>
+    </a>
+    [[/each]]
+</div> 

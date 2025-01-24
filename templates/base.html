@@ -1,5 +1,7 @@
-<main>
-    <div class="content-wrapper">
-        {{content}}
-    </div>
-</main> 
+<header class="page-header">
+    <h1>{{title}}</h1>
+    [[#if description]]
+    <p class="page-intro">{{description}}</p>
+    [[/if]]
+</header>
+{{content}} 

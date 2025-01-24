@@ -1,5 +1,6 @@
 ---
 title: About
+description: Developer and entrepreneur passionate about building useful tools and sharing knowledge.
 ---
 
 # About
