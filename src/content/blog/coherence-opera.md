@@ -4,7 +4,7 @@ subtitle: Constraints in tension and the conditions for insight
 description: A concrete example of coherence, a core theme from complexity, applied to the real world design challenge of architecting and building the iconic Sydney Opera House.
 date: 2024-05-17
 author: Mark McCoy
-tags: [synthesis, coherence, complexity, innovation]
+tags: [Synthesis, Coherence, Complexity, Innovation]
 image: /images/opera-house.webp
 imageAlt: Sydney Opera House
 ---
