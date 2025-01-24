@@ -30,13 +30,28 @@ async function buildSite() {
             const { attributes, body } = frontMatter(content);
             const html = marked(body);
             
-            // Get base template
-            const template = await fs.readFile('templates/base.html', 'utf-8');
+            // Use index template for index.md, base template for others
+            const templatePath = file === 'index.md' ? 'templates/index.html' : 'templates/base.html';
+            const template = await fs.readFile(templatePath, 'utf-8');
+            
+            // Read partials
+            const header = await fs.readFile('templates/partials/header.html', 'utf-8');
+            const footer = await fs.readFile('templates/partials/footer.html', 'utf-8');
+            
+            // Add current year for copyright
+            const currentYear = new Date().getFullYear();
             
             // Simple template replacement
-            const finalHtml = template
-                .replace('{{title}}', attributes.title || 'My Site')
-                .replace('{{content}}', html);
+            let finalHtml = template
+                .replace('{{header}}', header)
+                .replace('{{footer}}', footer)
+                .replace(/\{\{title\}\}/g, attributes.title || 'My Site')
+                .replace(/\{\{headline\}\}/g, attributes.headline || '')
+                .replace(/\{\{description\}\}/g, attributes.description || '')
+                .replace(/\{\{heroImage\}\}/g, attributes.heroImage || '')
+                .replace(/\{\{copyright\}\}/g, attributes.copyright || 'Fas Labs Ltd')
+                .replace(/\{\{currentYear\}\}/g, currentYear)
+                .replace(/\{\{content\}\}/g, html);
             
             // Write output file
             const outputPath = path.join('dist', file.replace('.md', '.html'));
@@ -47,6 +62,10 @@ async function buildSite() {
     // Build blog posts
     const blogDir = 'src/content/blog';
     const blogFiles = await fs.readdir(blogDir);
+    
+    // Read partials once
+    const header = await fs.readFile('templates/partials/header.html', 'utf-8');
+    const footer = await fs.readFile('templates/partials/footer.html', 'utf-8');
     
     for (const file of blogFiles) {
         if (file.endsWith('.md')) {
@@ -64,8 +83,10 @@ async function buildSite() {
                 day: 'numeric'
             });
             
-            // Replace template variables - using proper variable names
+            // Replace template variables
             let finalHtml = template
+                .replace('{{header}}', header)
+                .replace('{{footer}}', footer)
                 .replace(/\{\{title\}\}/g, attributes.title || '')
                 .replace(/\{\{subtitle\}\}/g, attributes.subtitle || '')
                 .replace(/\{\{description\}\}/g, attributes.description || '')

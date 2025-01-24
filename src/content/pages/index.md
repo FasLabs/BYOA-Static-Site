@@ -1,5 +1,9 @@
 ---
-title: Welcome to My Site
+title: Mark McCoy
+headline: Navigating complexity.
+description: Hi, I'm Mark McCoy. I focus on the praxis (practical application of theory) of complexity, natural sciences, and emerging tools-like AI—to support the development of individuals and organisations.
+heroImage: /images/markmccoy-headshot.jpeg
+copyright: Fas Labs Ltd
 ---
 
 # Welcome to My Site
