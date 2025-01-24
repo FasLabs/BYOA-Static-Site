@@ -87,6 +87,12 @@ async function buildSite() {
     if (await fs.pathExists('dist/blog')) {
         await fs.move('dist/blog', 'dist/writing', { overwrite: true });
     }
+
+    // Build blog posts and get the posts array
+    const posts = await buildBlogPosts();
+    
+    // Build the writing index page
+    await buildWritingPage(posts);
 }
 
 async function buildBlogPosts() {
@@ -100,9 +106,6 @@ async function buildBlogPosts() {
             const { attributes, body } = frontMatter(content);
             const html = marked(body);
             
-            // Get writing template
-            const template = await fs.readFile('templates/writing-post.html', 'utf-8');
-            
             // Format the date
             const date = new Date(attributes.date);
             const formattedDate = date.toLocaleDateString('en-US', {
@@ -111,15 +114,22 @@ async function buildBlogPosts() {
                 day: 'numeric'
             });
             
-            // Store post data for the index
+            // Store complete post data for the index
             posts.push({
                 title: attributes.title,
-                date: date,
+                date: attributes.date,
+                formattedDate: formattedDate,
+                author: attributes.author || 'Mark McCoy',
                 slug: file.replace('.md', ''),
-                excerpt: attributes.excerpt || '',
+                description: attributes.description || '',
+                image: attributes.image || '',
+                imageAlt: attributes.imageAlt || '',
                 tags: attributes.tags || []
             });
 
+            // Get writing template
+            const template = await fs.readFile('templates/writing-post.html', 'utf-8');
+            
             // Add current year for copyright
             const currentYear = new Date().getFullYear();
             
@@ -191,7 +201,59 @@ async function buildBlogPosts() {
         }
     }
     
-    return posts.sort((a, b) => b.date - a.date);
+    return posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+async function buildWritingPage(posts) {
+    // Get unique tags from all posts
+    const uniqueTags = [...new Set(posts.flatMap(post => post.tags))].sort();
+    
+    // Get writing template
+    const writingTemplate = await fs.readFile('templates/writing.html', 'utf-8');
+    
+    // Replace template variables
+    let writingContent = writingTemplate
+        .replace(/\[\[#each uniqueTags\]\]([\s\S]*?)\[\[\/each\]\]/g, 
+            uniqueTags.map(tag => 
+                `<li><a href="/tags/${tag.toLowerCase()}" class="tag">${tag}</a></li>`
+            ).join('\n')
+        );
+
+    // Replace posts loop with complete post data
+    writingContent = writingContent.replace(/\[\[#each posts\]\]([\s\S]*?)\[\[\/each\]\]/g,
+        posts.map(post => `
+            <a href="/writing/${post.slug}" class="blog-card">
+                ${post.image ? `
+                <img 
+                    src="${post.image}"
+                    alt="${post.imageAlt}"
+                    class="blog-card-image"
+                    loading="lazy"
+                >` : ''}
+                <div class="blog-card-content">
+                    <h2>${post.title}</h2>
+                    <div class="blog-card-meta">
+                        <time datetime="${post.date}">${post.formattedDate}</time>
+                        · ${post.author}
+                    </div>
+                    ${post.description ? `
+                    <p class="blog-card-description">${post.description}</p>
+                    ` : ''}
+                </div>
+            </a>
+        `).join('\n')
+    );
+
+    // Add to base template
+    const currentYear = new Date().getFullYear();
+    const finalHtml = baseTemplate
+        .replace('{{content}}', writingContent)
+        .replace(/\{\{title\}\}/g, 'Writing')
+        .replace(/\{\{currentYear\}\}/g, currentYear)
+        .replace(/\{\{copyright\}\}/g, 'Fas Labs Ltd');
+
+    // Write the file
+    await fs.writeFile('dist/writing.html', finalHtml);
 }
 
 // Modify the last line to call both functions
