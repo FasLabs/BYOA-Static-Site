@@ -4,6 +4,8 @@
   --link-color: #555;
   --link-hover-color: #000;
   --border-color: #9a8f76;
+  --tag-bg-color: #e2dfd9;
+  --tag-hover-bg-color: #9a8f76;
   --side-padding: 2rem;
 }
 
@@ -266,6 +268,16 @@ main h1, main h2, main h3 {
 .post-tags .tag {
     color: var(--link-color);
     text-decoration: none;
+    background-color: var(--tag-bg-color);
+    padding: 0.15rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.post-tags .tag:hover {
+    background-color: var(--tag-hover-bg-color);
+    color: var(--background-color);
 }
 
 .post-author {
@@ -413,19 +425,8 @@ main h1, main h2, main h3 {
     }
 }
 
-.blog-post .subtitle {
-    font-size: 1.5rem;
-    color: var(--link-color);
-    font-weight: normal;
-    margin: 1rem 0;
-}
-
 .blog-post .post-description {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--text-color);
-    margin: 1.5rem 0;
-    font-style: italic;
+    display: none;
 }
 
 @media (max-width: 600px) {

@@ -142,6 +142,13 @@ async function buildBlogPosts() {
                 postContent = postContent.replace(/\[\[#if imageCaption\]\]([\s\S]*?)\[\[\/if\]\]/g, '');
             }
 
+            // Handle description conditional
+            if (attributes.description) {
+                postContent = postContent.replace(/\[\[#if description\]\]([\s\S]*?)\[\[\/if\]\]/g, '$1');
+            } else {
+                postContent = postContent.replace(/\[\[#if description\]\]([\s\S]*?)\[\[\/if\]\]/g, '');
+            }
+            
             // Handle conditionals
             if (attributes.subtitle) {
                 postContent = postContent.replace(/\[\[#if subtitle\]\]([\s\S]*?)\[\[\/if\]\]/g, '$1');
