@@ -1,10 +1,12 @@
 ---
-title: "Coherence at the Sydney Opera House"
-subtitle: "Constraints in tension and the conditions for insight"
-description: At 183m long, 120m wide, 67m high, and consisting of 2,200 concrete ribs, the Sydney Opera House is both a World Heritage Building and one of the most iconic buildings in the world.
-date: "2024-05-17"
-tags: ["synthesis", "coherence","complexity", "innovation"]
-image: "/images/opera-house.webp"
+title: Coherence at the Sydney Opera House
+subtitle: Constraints in tension and the conditions for insight
+description: A concrete example of coherence, a core theme from complexity, applied to the real world design challenge of architecting and building the iconic Sydney Opera House.
+date: 2024-05-17
+author: Mark McCoy
+tags: [synthesis, coherence, complexity, innovation]
+image: /images/opera-house.webp
+imageAlt: Sydney Opera House
 ---
 At 183m long, 120m wide, 67m high, and consisting of 2,200 concrete ribs, the Sydney Opera House is both a World Heritage Building and one of the most iconic buildings in the world.
 

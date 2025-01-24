@@ -219,49 +219,98 @@ main h1, main h2, main h3 {
 }
 
 /* Blog Post Styles */
-.blog-post .post-header,
-.blog-post .subtitle,
-.blog-post .post-meta,
-.blog-post .tags {
-    margin: 1rem 0;
-    text-align: center;
+.blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem var(--side-padding);
 }
 
 .blog-post .post-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
+    text-align: left;
 }
 
-.blog-post .subtitle {
-    font-size: 1.5rem;
-    color: var(--link-color);
-    font-weight: normal;
+.blog-post h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    font-weight: 500;
 }
 
 .blog-post .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--link-color);
+    font-size: 0.9rem;
+    margin: 1rem 0 2rem 0;
+}
+
+.meta-separator {
+    color: var(--border-color);
+}
+
+.post-tags {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.post-tags .tag {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.post-tags .tag:not(:last-child):after {
+    content: ",";
+    margin-right: 0.25rem;
+}
+
+.post-author {
     color: var(--link-color);
 }
 
-.blog-post .tags {
-    margin-top: 1rem;
+.post-share {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
 }
 
-.blog-post .tag {
-    display: inline-block;
-    padding: 0.2rem 0.8rem;
-    margin: 0 0.3rem;
-    background: var(--border-color);
-    border-radius: 3px;
-    font-size: 0.9rem;
+.post-share button {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
 }
 
-.blog-post .featured-image {
-    max-width: 100%;
-    max-height: 500px; /* Limit height */
-    width: auto;
+.post-share button:hover {
+    color: var(--link-hover-color);
+}
+
+.featured-image {
+    margin: 2rem 0;
+}
+
+.featured-image img {
+    width: 100%;
     height: auto;
-    margin: 2rem auto;
-    border-radius: 8px;
-    object-fit: contain;
+    border-radius: 4px;
+}
+
+.featured-image figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--link-color);
+}
+
+.post-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.post-content p {
+    margin-bottom: 1.5rem;
 }
 
 /* Add these new styles */
@@ -346,4 +395,19 @@ main h1, main h2, main h3 {
     .content-side h1 {
         font-size: 2.5rem;
     }
+}
+
+.blog-post .subtitle {
+    font-size: 1.5rem;
+    color: var(--link-color);
+    font-weight: normal;
+    margin: 1rem 0;
+}
+
+.blog-post .post-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 1.5rem 0;
+    font-style: italic;
 } 

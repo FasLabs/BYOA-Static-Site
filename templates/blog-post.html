@@ -1,18 +1,39 @@
 <main>
     <div class="content-wrapper blog-post">
-        <header class="post-header">
-            <h1>{{title}}</h1>
-            <h2 class="subtitle">{{subtitle}}</h2>
-            <div class="post-meta">
-                <time datetime="{{date}}">{{formattedDate}}</time>
+        <article>
+            <header class="post-header">
+                <h1>[[title]]</h1>
+                [[#if subtitle]]
+                <h2 class="subtitle">[[subtitle]]</h2>
+                [[/if]]
+                <div class="post-meta">
+                    <time datetime="[[date]]">[[formattedDate]]</time>
+                    <span class="meta-separator">|</span>
+                    <div class="post-tags">
+                        [[#each tags]]
+                            <a href="/tags/[[this]]" class="tag">[[this]]</a>
+                        [[/each]]
+                    </div>
+                    <span class="meta-separator">|</span>
+                    <div class="post-author">[[author]]</div>
+                </div>
+                [[#if description]]
+                <div class="post-description">[[description]]</div>
+                [[/if]]
+            </header>
+
+            [[#if image]]
+            <figure class="featured-image">
+                <img src="[[image]]" alt="[[imageAlt]]">
+                [[#if imageCaption]]
+                <figcaption>[[imageCaption]]</figcaption>
+                [[/if]]
+            </figure>
+            [[/if]]
+
+            <div class="post-content">
+                [[content]]
             </div>
-            <div class="tags">
-                {{tags}}
-            </div>
-            <img class="featured-image" src="{{image}}" alt="{{title}}">
-        </header>
-        <div class="post-content">
-            {{content}}
-        </div>
+        </article>
     </div>
-</main> 
+</main>
