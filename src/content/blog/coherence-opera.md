@@ -1,3 +1,11 @@
+---
+title: "Coherence at the Sydney Opera House"
+subtitle: "Constraints in tension and the conditions for insight"
+description: At 183m long, 120m wide, 67m high, and consisting of 2,200 concrete ribs, the Sydney Opera House is both a World Heritage Building and one of the most iconic buildings in the world.
+date: "2024-05-17"
+tags: ["synthesis", "coherence","complexity", "innovation"]
+image: "/images/opera-house.webp"
+---
 At 183m long, 120m wide, 67m high, and consisting of 2,200 concrete ribs, the Sydney Opera House is both a World Heritage Building and one of the most iconic buildings in the world.
 
 Yet the story of designing and building Sydney Opera House is a story of **constraints in tension and probing for coherence**.
@@ -30,7 +38,7 @@ For years, Utzon and his team explored different designs and construction method
 
 Then Utzon found coherence at breakfast.
 
-Utzon realised, while eating an orange, that translating the properties of an orange peel into the design of the opera house would be coherent with the aesthetics, budget, and physics [Sydney Opera House Utzon Design Principles).
+Utzon realised, while eating an orange, that translating the properties of an orange peel into the design of the opera house would be coherent with the aesthetics, budget, and physics (Sydney Opera House Utzon Design Principles).
 
 ![Opera House Geometry](/images/opera-house-geometry.webp "A visual representation of the spherical geometry that was a breakthrough in the development of the Sydney Opera House. ")
 
