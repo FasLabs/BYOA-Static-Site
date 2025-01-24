@@ -32,19 +32,15 @@
     <main>
         <div class="content-wrapper blog-post">
             <header class="post-header">
-                {{#if title}}<h1>{{title}}</h1>{{/if}}
-                {{#if subtitle}}<h2 class="subtitle">{{subtitle}}</h2>{{/if}}
+                <h1>{{title}}</h1>
+                <h2 class="subtitle">{{subtitle}}</h2>
                 <div class="post-meta">
-                    {{#if formattedDate}}<time datetime="{{date}}">{{formattedDate}}</time>{{/if}}
+                    <time datetime="{{date}}">{{formattedDate}}</time>
                 </div>
-                {{#if tags}}
                 <div class="tags">
                     {{tags}}
                 </div>
-                {{/if}}
-                {{#if image}}
                 <img class="featured-image" src="{{image}}" alt="{{title}}">
-                {{/if}}
             </header>
             <div class="post-content">
                 {{content}}
