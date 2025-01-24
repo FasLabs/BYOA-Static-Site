@@ -5,14 +5,14 @@ description: Developer and entrepreneur passionate about building useful tools a
 
 # About
 
-Hi, I'm Mark McCoy. I'm a developer and entrepreneur passionate about building useful tools and sharing knowledge.
+Hi, I'm Mark McCoy. I explore and write about complexity, innovation, and organizational development.
 
 ## What I Do
 
-- Software Development
-- Technical Writing
-- Product Strategy
-- Open Source Contributions
+- Writing & Research
+- Complexity Consulting
+- Innovation Strategy
+- Organizational Development
 
 I currently run Fas Labs Ltd., where we focus on creating innovative solutions for modern development challenges.
 

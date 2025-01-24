@@ -79,97 +79,119 @@ async function buildSite() {
             await fs.outputFile(outputPath, finalHtml);
         }
     }
+
+    // Ensure writing directory exists
+    await fs.ensureDir('dist/writing');
+
+    // Move any existing blog content to writing directory
+    if (await fs.pathExists('dist/blog')) {
+        await fs.move('dist/blog', 'dist/writing', { overwrite: true });
+    }
 }
 
 async function buildBlogPosts() {
-    const postsDir = 'src/content/blog';
+    const writingDir = 'src/content/writing';
+    const writingFiles = await fs.readdir(writingDir);
     const posts = [];
-    const uniqueTags = new Set();
-
-    // Read all blog posts
-    const files = await fs.readdir(postsDir);
     
-    for (const file of files) {
+    for (const file of writingFiles) {
         if (file.endsWith('.md')) {
-            const content = await fs.readFile(path.join(postsDir, file), 'utf-8');
+            const content = await fs.readFile(path.join(writingDir, file), 'utf-8');
             const { attributes, body } = frontMatter(content);
+            const html = marked(body);
             
-            // Collect unique tags
-            if (attributes.tags) {
-                attributes.tags.forEach(tag => uniqueTags.add(tag));
+            // Get writing template
+            const template = await fs.readFile('templates/writing-post.html', 'utf-8');
+            
+            // Format the date
+            const date = new Date(attributes.date);
+            const formattedDate = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Store post data for the index
+            posts.push({
+                title: attributes.title,
+                date: date,
+                slug: file.replace('.md', ''),
+                excerpt: attributes.excerpt || '',
+                tags: attributes.tags || []
+            });
+
+            // Add current year for copyright
+            const currentYear = new Date().getFullYear();
+            
+            // Replace template variables in writing post template first
+            let postContent = template
+                .replace(/\[\[title\]\]/g, attributes.title || '')
+                .replace(/\[\[subtitle\]\]/g, attributes.subtitle || '')
+                .replace(/\[\[description\]\]/g, attributes.description || '')
+                .replace(/\[\[date\]\]/g, attributes.date || '')
+                .replace(/\[\[formattedDate\]\]/g, formattedDate)
+                .replace(/\[\[author\]\]/g, attributes.author || '')
+                .replace(/\[\[content\]\]/g, html)
+                .replace(/\[\[image\]\]/g, attributes.image || '')
+                .replace(/\[\[imageAlt\]\]/g, attributes.imageAlt || '')
+                .replace(/\[\[imageCaption\]\]/g, attributes.imageCaption || '');
+
+            // Handle image conditional
+            if (attributes.image) {
+                postContent = postContent.replace(/\[\[#if image\]\]([\s\S]*?)\[\[\/if\]\]/g, '$1');
+            } else {
+                postContent = postContent.replace(/\[\[#if image\]\]([\s\S]*?)\[\[\/if\]\]/g, '');
+            }
+
+            // Handle image caption conditional
+            if (attributes.imageCaption) {
+                postContent = postContent.replace(/\[\[#if imageCaption\]\]([\s\S]*?)\[\[\/if\]\]/g, '$1');
+            } else {
+                postContent = postContent.replace(/\[\[#if imageCaption\]\]([\s\S]*?)\[\[\/if\]\]/g, '');
+            }
+
+            // Handle description conditional
+            if (attributes.description) {
+                postContent = postContent.replace(/\[\[#if description\]\]([\s\S]*?)\[\[\/if\]\]/g, '$1');
+            } else {
+                postContent = postContent.replace(/\[\[#if description\]\]([\s\S]*?)\[\[\/if\]\]/g, '');
             }
             
-            // Add to posts array
-            posts.push({
-                ...attributes,
-                slug: file.replace('.md', ''),
-                content: marked(body),
-                formattedDate: new Date(attributes.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                })
-            });
+            // Handle conditionals
+            if (attributes.description) {
+                postContent = postContent.replace(/\[\[#if description\]\]([\s\S]*?)\[\[\/if\]\]/g, '$1');
+            } else {
+                postContent = postContent.replace(/\[\[#if description\]\]([\s\S]*?)\[\[\/if\]\]/g, '');
+            }
+            
+            // Handle tags
+            if (attributes.tags && Array.isArray(attributes.tags)) {
+                const tagsHtml = attributes.tags
+                    .map(tag => `<a href="/tags/${tag.toLowerCase()}" class="tag">${tag}</a>`)
+                    .join('');
+                postContent = postContent.replace(/\[\[#each tags\]\]([\s\S]*?)\[\[\/each\]\]/g, tagsHtml);
+            } else {
+                postContent = postContent.replace(/\[\[#each tags\]\]([\s\S]*?)\[\[\/each\]\]/g, '');
+            }
+
+            // Now replace variables in base template
+            let finalHtml = baseTemplate
+                .replace('{{content}}', postContent)
+                .replace(/\{\{title\}\}/g, attributes.title || '')
+                .replace(/\{\{currentYear\}\}/g, currentYear)
+                .replace(/\{\{copyright\}\}/g, 'Fas Labs Ltd')
+                .replace(/href="\/blog/g, 'href="/writing');
+            
+            // Create writing directory if it doesn't exist
+            await fs.ensureDir('dist/writing');
+            
+            // Write output file
+            const outputPath = path.join('dist/writing', file.replace('.md', '.html'));
+            await fs.writeFile(outputPath, finalHtml);
         }
     }
-
-    // Sort posts by date
-    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    // Build the blog index page
-    await buildBlogIndex(posts, uniqueTags);
-}
-
-async function buildBlogIndex(posts, uniqueTags) {
-    // Load templates
-    const baseTemplate = await fs.readFile('templates/base-layout.html', 'utf-8');
-    const blogTemplate = await fs.readFile('templates/blog.html', 'utf-8');
     
-    // Replace posts in template
-    let blogContent = blogTemplate.replace(/\[\[#each posts\]\]([\s\S]*?)\[\[\/each\]\]/g, 
-        posts.map(post => {
-            let postTemplate = `
-                <a href="/blog/${post.slug}" class="blog-card">
-                    ${post.image ? `
-                        <img 
-                            src="${post.image}" 
-                            alt="${post.imageAlt || ''}" 
-                            class="blog-card-image"
-                            loading="lazy"
-                        >
-                    ` : ''}
-                    <div class="blog-card-content">
-                        <h2>${post.title}</h2>
-                        <div class="blog-card-meta">
-                            <time datetime="${post.date}">${post.formattedDate}</time>
-                            · ${post.author}
-                        </div>
-                        <p class="blog-card-description">${post.description || ''}</p>
-                    </div>
-                </a>
-            `;
-            return postTemplate;
-        }).join('')
-    );
-
-    // Replace tags in template
-    blogContent = blogContent.replace(/\[\[#each uniqueTags\]\]([\s\S]*?)\[\[\/each\]\]/g,
-        Array.from(uniqueTags).map(tag => `
-            <li>
-                <a href="/tags/${tag.toLowerCase()}" class="tag">${tag}</a>
-            </li>
-        `).join('')
-    );
-
-    // Insert into base template
-    const finalHtml = baseTemplate
-        .replace('{{content}}', blogContent)
-        .replace('{{title}}', 'Articles')
-        .replace('{{currentYear}}', new Date().getFullYear())
-        .replace('{{copyright}}', 'Fas Labs Ltd');
-
-    // Write the file
-    await fs.outputFile('dist/blog/index.html', finalHtml);
+    return posts.sort((a, b) => b.date - a.date);
 }
 
 // Modify the last line to call both functions
