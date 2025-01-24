@@ -10,15 +10,16 @@ async function buildSite() {
     // Copy static assets
     await fs.copy('src/assets', 'dist', { overwrite: true });
 
-    // Ensure the js directory exists in dist
+    // Ensure directories exist
     await fs.ensureDir('dist/js');
-    
-    // Copy JavaScript files
-    await fs.copy('src/assets/js', 'dist/js', { overwrite: true });
-
-    // Ensure the images directory exists in dist
     await fs.ensureDir('dist/images');
+    
+    // Copy assets
+    await fs.copy('src/assets/js', 'dist/js', { overwrite: true });
     await fs.copy('src/assets/images', 'dist/images', { overwrite: true });
+
+    // Add this near the top where templates are loaded
+    const baseTemplate = await fs.readFile('templates/base-layout.html', 'utf-8');
 
     // Build pages
     const pagesDir = 'src/content/pages';
@@ -34,24 +35,18 @@ async function buildSite() {
             const templatePath = file === 'index.md' ? 'templates/index.html' : 'templates/base.html';
             const template = await fs.readFile(templatePath, 'utf-8');
             
-            // Read partials
-            const header = await fs.readFile('templates/partials/header.html', 'utf-8');
-            const footer = await fs.readFile('templates/partials/footer.html', 'utf-8');
-            
             // Add current year for copyright
             const currentYear = new Date().getFullYear();
             
-            // Simple template replacement
-            let finalHtml = template
-                .replace('{{header}}', header)
-                .replace('{{footer}}', footer)
+            // Replace template processing (around line 43) with:
+            let finalHtml = baseTemplate
+                .replace('{{content}}', template)
                 .replace(/\{\{title\}\}/g, attributes.title || 'My Site')
                 .replace(/\{\{headline\}\}/g, attributes.headline || '')
                 .replace(/\{\{description\}\}/g, attributes.description || '')
                 .replace(/\{\{heroImage\}\}/g, attributes.heroImage || '')
                 .replace(/\{\{copyright\}\}/g, attributes.copyright || 'Fas Labs Ltd')
-                .replace(/\{\{currentYear\}\}/g, currentYear)
-                .replace(/\{\{content\}\}/g, html);
+                .replace(/\{\{currentYear\}\}/g, currentYear);
             
             // Write output file
             const outputPath = path.join('dist', file.replace('.md', '.html'));
@@ -62,10 +57,6 @@ async function buildSite() {
     // Build blog posts
     const blogDir = 'src/content/blog';
     const blogFiles = await fs.readdir(blogDir);
-    
-    // Read partials once
-    const header = await fs.readFile('templates/partials/header.html', 'utf-8');
-    const footer = await fs.readFile('templates/partials/footer.html', 'utf-8');
     
     for (const file of blogFiles) {
         if (file.endsWith('.md')) {
@@ -84,9 +75,8 @@ async function buildSite() {
             });
             
             // Replace template variables
-            let finalHtml = template
-                .replace('{{header}}', header)
-                .replace('{{footer}}', footer)
+            let finalHtml = baseTemplate
+                .replace('{{content}}', template)
                 .replace(/\{\{title\}\}/g, attributes.title || '')
                 .replace(/\{\{subtitle\}\}/g, attributes.subtitle || '')
                 .replace(/\{\{description\}\}/g, attributes.description || '')

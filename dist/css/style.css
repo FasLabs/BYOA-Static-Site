@@ -219,21 +219,26 @@ main h1, main h2, main h3 {
 }
 
 /* Blog Post Styles */
+.blog-post .post-header,
+.blog-post .subtitle,
+.blog-post .post-meta,
+.blog-post .tags {
+    margin: 1rem 0;
+    text-align: center;
+}
+
 .blog-post .post-header {
     margin-bottom: 3rem;
-    text-align: center;
 }
 
 .blog-post .subtitle {
     font-size: 1.5rem;
     color: var(--link-color);
-    margin: 1rem 0;
     font-weight: normal;
 }
 
 .blog-post .post-meta {
     color: var(--link-color);
-    margin: 1rem 0;
 }
 
 .blog-post .tags {
