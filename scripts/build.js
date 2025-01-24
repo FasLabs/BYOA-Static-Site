@@ -40,7 +40,7 @@ async function buildSite() {
             
             // Replace template processing (around line 43) with:
             let finalHtml = baseTemplate
-                .replace('{{content}}', template)
+                .replace('{{content}}', template.replace('{{content}}', html))
                 .replace(/\{\{title\}\}/g, attributes.title || 'My Site')
                 .replace(/\{\{headline\}\}/g, attributes.headline || '')
                 .replace(/\{\{description\}\}/g, attributes.description || '')
