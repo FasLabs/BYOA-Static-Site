@@ -6,6 +6,9 @@ const frontMatter = require('front-matter');
 // Move baseTemplate declaration outside both functions
 let baseTemplate;
 
+const isProduction = process.env.NODE_ENV === 'production';
+const baseUrl = isProduction ? '/BYOA-Static-Site' : '';
+
 async function buildSite() {
     // Create dist directory
     await fs.ensureDir('dist');
@@ -49,7 +52,8 @@ async function buildSite() {
                 .replace(/\{\{description\}\}/g, attributes.description || '')
                 .replace(/\{\{heroImage\}\}/g, attributes.heroImage || '')
                 .replace(/\{\{copyright\}\}/g, attributes.copyright || 'Fas Labs Ltd')
-                .replace(/\{\{currentYear\}\}/g, currentYear);
+                .replace(/\{\{currentYear\}\}/g, currentYear)
+                .replace(/\{\{baseUrl\}\}/g, baseUrl);
             
             // Handle conditionals
             if (attributes.subtitle) {
@@ -190,7 +194,8 @@ async function buildBlogPosts() {
                 .replace(/\{\{title\}\}/g, attributes.title || '')
                 .replace(/\{\{currentYear\}\}/g, currentYear)
                 .replace(/\{\{copyright\}\}/g, 'Fas Labs Ltd')
-                .replace(/href="\/blog/g, 'href="/writing');
+                .replace(/href="\/blog/g, 'href="/writing')
+                .replace(/\{\{baseUrl\}\}/g, baseUrl);
             
             // Create writing directory if it doesn't exist
             await fs.ensureDir('dist/writing');
@@ -250,7 +255,8 @@ async function buildWritingPage(posts) {
         .replace('{{content}}', writingContent)
         .replace(/\{\{title\}\}/g, 'Writing')
         .replace(/\{\{currentYear\}\}/g, currentYear)
-        .replace(/\{\{copyright\}\}/g, 'Fas Labs Ltd');
+        .replace(/\{\{copyright\}\}/g, 'Fas Labs Ltd')
+        .replace(/\{\{baseUrl\}\}/g, baseUrl);
 
     // Write the file
     await fs.writeFile('dist/writing.html', finalHtml);
