@@ -53,7 +53,9 @@ async function buildSite() {
                 .replace(/\{\{heroImage\}\}/g, attributes.heroImage || '')
                 .replace(/\{\{copyright\}\}/g, attributes.copyright || 'Fas Labs Ltd')
                 .replace(/\{\{currentYear\}\}/g, currentYear)
-                .replace(/\{\{baseUrl\}\}/g, baseUrl);
+                .replace(/\{\{baseUrl\}\}/g, baseUrl)
+                .replace(/href="\//g, `href="${baseUrl}/`)
+                .replace(/src="\//g, `src="${baseUrl}/`);
             
             // Handle conditionals
             if (attributes.subtitle) {

@@ -22,10 +22,10 @@
                 <span></span>
             </button>
             <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/writing">Writing</a>
-                <a href="/about">About</a>
-                <a href="/contact">Contact</a>
+                <a href="{{baseUrl}}/">Home</a>
+                <a href="{{baseUrl}}/writing">Writing</a>
+                <a href="{{baseUrl}}/about">About</a>
+                <a href="{{baseUrl}}/contact">Contact</a>
             </div>
         </nav>
     </header>
@@ -44,7 +44,7 @@
                     <i class="fab fa-linkedin-in"></i>
                 </a>
                 <a href="https://theadjacent.co/" target="_blank" rel="noopener" aria-label="The Adjacent">
-                    <img src="/images/adjacent-icon.svg" alt="The Adjacent" class="adjacent-icon">
+                    <img src="{{baseUrl}}/images/adjacent-icon.svg" alt="The Adjacent" class="adjacent-icon">
                 </a>
             </div>
         </div>
@@ -52,6 +52,6 @@
             © {{currentYear}} {{copyright}}. All rights reserved.
         </div>
     </footer>
-    <script src="/js/main.js"></script>
+    <script src="{{baseUrl}}/js/main.js"></script>
 </body>
 </html> 
